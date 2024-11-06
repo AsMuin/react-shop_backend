@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema(
+export interface IUser {
+    name: string;
+    email: string;
+    password: string;
+    cartData: {[key: string]: any};
+}
+
+const userSchema = new mongoose.Schema<IUser>(
     {
         name: {type: String, required: true},
         email: {type: String, required: true, unique: true},
@@ -9,5 +16,5 @@ const userSchema = new mongoose.Schema(
     },
     {minimize: false}
 );
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 export default User;

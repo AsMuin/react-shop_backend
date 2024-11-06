@@ -4,6 +4,7 @@ import 'dotenv/config';
 import connectDB from './config/mongodb';
 import userRouter from './routes/userRoute';
 import productRouter from './routes/productRoute';
+import cartRouter from './routes/cartRoute';
 
 //App Config
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.urlencoded({extended: true})).use(express.json());
 // .use(cors());
 
 //api
-app.use('/api/user', userRouter).use('/api/product', productRouter);
+app.use('/api/user', userRouter).use('/api/product', productRouter).use('./api/cart', cartRouter);
 
 app.get('/', (request, response) => {
     response.send('Express Server is running');
