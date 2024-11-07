@@ -24,7 +24,7 @@ const loginUser: controllerAction = async (request, response) => {
         if (!isVerified) {
             return response.json({success: false, message: '密码错误'});
         }
-        const token = createToken(user._id);
+        const token = createToken(user._id.toString());
         response.json({success: true, message: '登录成功', token});
     } catch (error: any) {
         response.json({success: false, message: error.message});
@@ -50,7 +50,7 @@ const registerUser: controllerAction = async (request, response) => {
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new User({name, email, password: hashedPassword});
         const user = await newUser.save();
-        const token = createToken(user._id);
+        const token = createToken(user._id.toString() );
         response.json({success: true, message: '注册成功', token});
     } catch (error: any) {
         console.log(error);
