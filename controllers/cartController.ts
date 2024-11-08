@@ -36,5 +36,15 @@ const updateCart: controllerAction = async (request, response) => {
         response.json({success: false, message: error.message});
     }
 };
-const getUserCart: controllerAction = async (request, response) => {};
+const getUserCart: controllerAction = async (request, response) => {
+    try {
+        const {userId} = request.body;
+        const userData = await User.findById(userId);
+        const cartData = userData?.cartData ?? {};
+        response.json({success: true, data: cartData, message: '获取用户购物车数据成功'});
+    } catch (error: any) {
+        console.log(error);
+        response.json({success: false, message: error.message});
+    }
+};
 export {addToCart, updateCart, getUserCart};
