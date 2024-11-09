@@ -1,10 +1,15 @@
 import mongoose from 'mongoose';
 
+export interface CartData {
+    [key: string]: {
+        [key in 'S' | 'M' | 'L' | 'XL' | 'XXL']?: number;
+    };
+}
 export interface IUser {
     name: string;
     email: string;
     password: string;
-    cartData: {[key: string]: any};
+    cartData: CartData;
 }
 
 const userSchema = new mongoose.Schema<IUser>(

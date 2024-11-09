@@ -49,9 +49,9 @@ const registerUser: controllerAction = async (request, response) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new User({name, email, password: hashedPassword});
-        const user = await newUser.save();
-        const token = createToken(user._id.toString() );
-        response.json({success: true, message: '注册成功', token});
+        await newUser.save();
+        // const token = createToken(user._id.toString() );
+        response.json({success: true, message: '注册成功'});
     } catch (error: any) {
         console.log(error);
         response.json({success: false, message: error.message});
