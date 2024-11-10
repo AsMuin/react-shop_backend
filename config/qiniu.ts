@@ -19,10 +19,8 @@ export const uploader = async (filePath: string, fileName: string) => {
             new qiniu.form_up.PutExtra()
         );
         if (resp.statusCode === 200) {
-            console.log(data);
         } else {
             console.error(resp.statusCode);
-            console.log(data);
         }
         return process.env.QINIU_URL + data.key;
     } catch (error) {

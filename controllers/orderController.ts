@@ -15,7 +15,14 @@ const placeOrder: controllerAction = async (request, response) => {
 };
 const placeOrderStripe: controllerAction = async (request, response) => {};
 const placeOrderRazorpay: controllerAction = async (request, response) => {};
-const allOrders: controllerAction = async (request, response) => {};
+const allOrders: controllerAction = async (request, response) => {
+    try {
+        const orderList = await Order.find();
+        response.json({success: true, data: orderList, message: '获取所有订单成功'});
+    } catch (e: any) {
+        response.json({success: false, message: e.message});
+    }
+};
 const userOrders: controllerAction = async (request, response) => {
     try {
         const {userId} = request.body;
@@ -25,5 +32,14 @@ const userOrders: controllerAction = async (request, response) => {
         response.json({success: false, message: e.message});
     }
 };
-const updateStatus: controllerAction = async (request, response) => {};
+const updateStatus: controllerAction = async (request, response) => {
+    try {
+        const {orderId, status} = request.body;
+        await Order.findByIdAndUpdate(orderId, {status});
+        const newOrder = await Order.findById(orderId);
+        response.json({success: true, data: newOrder, message: '更新订单状态成功'});
+    } catch (e: any) {
+        response.json({success: false, message: e.message});
+    }
+};
 export {placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus};
