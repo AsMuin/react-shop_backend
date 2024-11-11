@@ -1,5 +1,4 @@
 import type {controllerAction} from '.';
-// import {uploader} from '../config/qiniu';
 import CF_upload from '../config/cloudFlare';
 import Product from '../models/productModel';
 const addProduct: controllerAction = async (request, response) => {
@@ -26,7 +25,6 @@ const addProduct: controllerAction = async (request, response) => {
             image: uploadImages,
             date: Date.now()
         };
-        console.log(product);
         await new Product(product).save();
         response.json({success: true, message: '商品添加成功'});
     } catch (error: any) {
