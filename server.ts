@@ -13,7 +13,7 @@ const port = process.env.PORT || 2333;
 connectDB();
 
 //Middlewares
-app.use(express.urlencoded({extended: true})).use(express.json()); 
+app.use(express.urlencoded({extended: true})).use(express.json());
 // .use(cors());
 
 //api

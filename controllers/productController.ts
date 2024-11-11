@@ -1,6 +1,6 @@
 import type {controllerAction} from '.';
 // import {uploader} from '../config/qiniu';
-import CF_upload from '../config/cloundFlare'
+import CF_upload from '../config/cloudFlare';
 import Product from '../models/productModel';
 const addProduct: controllerAction = async (request, response) => {
     try {
@@ -8,20 +8,10 @@ const addProduct: controllerAction = async (request, response) => {
         const files = request.files as {
             [fieldName: string]: Express.Multer.File[];
         };
-
-        // const uploadImages = await Promise.all(
-        //     Object.values(files)
-        //         .flat()
-        //         .map(file => {
-        //             console.log(file.path, file.filename);
-        //             return uploader(file.path, file.filename);
-        //         })
-        // );
         const uploadImages = await Promise.all(
             Object.values(files)
                 .flat()
                 .map(file => {
-                    console.log(file.buffer, file.originalname);
                     return CF_upload(file.buffer, file.originalname);
                 })
         );
