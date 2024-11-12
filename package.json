@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "server": "nodemon --exec tsx server.ts"
+        "serve": "nodemon --exec tsx server.ts"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.688.0",

@@ -56,7 +56,6 @@ const placeOrderStripe: controllerAction = async (request, response) => {
         return response.json({success: false, message: e.message});
     }
 };
-const placeOrderRazorpay: controllerAction = async (request, response) => {};
 const allOrders: controllerAction = async (request, response) => {
     try {
         const orderList = await Order.find();
@@ -84,4 +83,19 @@ const updateStatus: controllerAction = async (request, response) => {
         response.json({success: false, message: e.message});
     }
 };
-export {placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus};
+const verifyStripe: controllerAction = async (request, response) => {
+    try {
+        const {orderId, success, userId} = request.body;
+        if (success == true) {
+            await Order.findByIdAndUpdate(orderId, {payment: true});
+            await User.findByIdAndUpdate(userId, {cartData: {}});
+            response.json({success: true, message: '支付成功'});
+        } else {
+            await Order.findByIdAndDelete(orderId);
+            response.json({success: false, message: '支付失败, 订单已取消'});
+        }
+    } catch (e: any) {
+        response.json({success: false, message: e.message});
+    }
+};
+export {placeOrder, placeOrderStripe, allOrders, userOrders, updateStatus, verifyStripe};
