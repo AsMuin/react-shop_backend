@@ -3,6 +3,7 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
+import CF_upload from '../config/cloudFlare';
 interface RegisterRequest {
     name: string;
     email: string;
@@ -48,7 +49,7 @@ const registerUser: controllerAction = async (request, response) => {
         //密码脱敏
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({name, email, password: hashedPassword});
+        const newUser = new User({name, email, password: hashedPassword, avatar: ''});
         await newUser.save();
         // const token = createToken(user._id.toString() );
         response.json({success: true, message: '注册成功'});
@@ -57,6 +58,50 @@ const registerUser: controllerAction = async (request, response) => {
         response.json({success: false, message: error.message});
     }
 };
+//User UpdatePassword
+const userUpdatePassword: controllerAction = async (request, response) => {
+    try {
+        const {userId, originalPassword, password, confirmPassword} = request.body;
+        console.log(userId, originalPassword, password, confirmPassword);
+        const user = await User.findById(userId);
+        if (!user) {
+            return response.json({success: false, message: '用户不存在'});
+        }
+        if (password !== confirmPassword) {
+            return response.json({success: false, message: '两次密码输入不一致'});
+        }
+        const isVerified = await bcrypt.compare(originalPassword, user.password);
+        if (!isVerified) {
+            return response.json({success: false, message: '原密码错误'});
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        user.password = hashedPassword;
+        await user.save();
+        return response.json({success: true, message: '密码修改成功'});
+    } catch (error: any) {
+        console.log(error);
+        response.json({success: true, message: error.message});
+    }
+};
+//User UploadAvatar
+const userUploadAvatar: controllerAction = async (request, response) => {
+    try {
+        const {userId} = request.body;
+        const avatar = request.file;
+        const user = await User.findById(userId);
+        if (!user) {
+            return response.json({success: false, message: '用户不存在'});
+        }
+        const avatarUrl = await CF_upload(avatar!.buffer, avatar!.originalname);
+        user.avatar = avatarUrl;
+        await user.save();
+        response.json({success: true, message: '头像上传成功'});
+    } catch (error: any) {
+        response.json({success: false, message: error.message});
+    }
+};
+
 //Admin Login
 const adminLogin: controllerAction = async (request, response) => {
     try {
@@ -71,4 +116,4 @@ const adminLogin: controllerAction = async (request, response) => {
         response.json({success: false, message: error.message});
     }
 };
-export {loginUser, registerUser, adminLogin};
+export {loginUser, registerUser, adminLogin, userUpdatePassword, userUploadAvatar};
