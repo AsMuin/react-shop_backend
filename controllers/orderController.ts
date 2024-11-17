@@ -40,7 +40,7 @@ const placeOrderStripe: controllerAction = async (request, response) => {
                 product_data: {
                     name: 'Deliver_fee'
                 },
-                unit_amount: 100
+                unit_amount: 1000
             },
             quantity: 1
         });

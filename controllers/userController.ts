@@ -26,7 +26,12 @@ const loginUser: controllerAction = async (request, response) => {
             return response.json({success: false, message: '密码错误'});
         }
         const token = createToken(user._id.toString());
-        response.json({success: true, message: '登录成功', token});
+        response.json({
+            success: true,
+            message: '登录成功',
+            token,
+            data: {name: user.name, email: user.email, avatar: user.avatar ?? ''}
+        });
     } catch (error: any) {
         response.json({success: false, message: error.message});
     }
@@ -55,6 +60,24 @@ const registerUser: controllerAction = async (request, response) => {
         response.json({success: true, message: '注册成功'});
     } catch (error: any) {
         console.log(error);
+        response.json({success: false, message: error.message});
+    }
+};
+
+//User Profile
+const userProfile: controllerAction = async (request, response) => {
+    try {
+        const {userId} = request.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return response.json({success: false, message: '用户不存在'});
+        }
+        response.json({
+            success: true,
+            message: '获取用户信息成功',
+            data: {name: user.name, email: user.email, avatar: user.avatar ?? ''}
+        });
+    } catch (error: any) {
         response.json({success: false, message: error.message});
     }
 };
@@ -116,4 +139,4 @@ const adminLogin: controllerAction = async (request, response) => {
         response.json({success: false, message: error.message});
     }
 };
-export {loginUser, registerUser, adminLogin, userUpdatePassword, userUploadAvatar};
+export {loginUser, registerUser, adminLogin, userUpdatePassword, userUploadAvatar, userProfile};
