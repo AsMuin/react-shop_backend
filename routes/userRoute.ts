@@ -19,6 +19,6 @@ userRouter.post('/admin', adminLogin);
 userRouter.get('/info', userAuth, userProfile);
 userRouter.post('/updatePassword', userAuth, userUpdatePassword);
 userRouter.post('/uploadAvatar', upload.single('avatar'), userAuth, userUploadAvatar);
-userRouter.post('/updateName',userAuth,userUpdateName)
-userRouter.post('./updateEmail',userAuth,userUpdateEmail)
+userRouter.post('/updateName', userAuth, userUpdateName);
+userRouter.post('/updateEmail', userAuth, userUpdateEmail);
 export default userRouter;

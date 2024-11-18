@@ -119,43 +119,55 @@ const userUploadAvatar: controllerAction = async (request, response) => {
         const avatarUrl = await CF_upload(avatar!.buffer, avatar!.originalname);
         user.avatar = avatarUrl;
         await user.save();
-        response.json({success: true, message: '头像上传成功',data:{name:user.name,avatar: user.avatar,email: user.email}});
+        response.json({
+            success: true,
+            message: '头像上传成功',
+            data: {name: user.name, avatar: user.avatar, email: user.email}
+        });
     } catch (error: any) {
         response.json({success: false, message: error.message});
     }
 };
 //User UpdateProfile
-const userUpdateName: controllerAction = async(request,response)=>{
-    try{
-        const {userId, name } = request.body;
+const userUpdateName: controllerAction = async (request, response) => {
+    try {
+        const {userId, name} = request.body;
         const user = await User.findById(userId);
-        if(!user){
+        if (!user) {
             return response.json({success: false, message: '用户不存在'});
-        }else{
+        } else {
             user.name = name;
             await user.save();
-            response.json({success: true, message: '用户名修改成功',data: {name: name,avatar: user.avatar,email: user.email}});
+            response.json({
+                success: true,
+                message: '用户名修改成功',
+                data: {name: name, avatar: user.avatar, email: user.email}
+            });
         }
-    }catch(error:any){
-        response.json({success: false, message: error.message})
+    } catch (error: any) {
+        response.json({success: false, message: error.message});
     }
-}
+};
 
-const userUpdateEmail:controllerAction = async(request,response)=>{
-    try{
-        const {userId,email} = request.body;
+const userUpdateEmail: controllerAction = async (request, response) => {
+    try {
+        const {userId, email} = request.body;
         const user = await User.findById(userId);
-        if(!user){
-            return response.json({success:false,message:'用户不存在'});
-        }else{
+        if (!user) {
+            return response.json({success: false, message: '用户不存在'});
+        } else {
             user.email = email;
             await user.save();
-            response.json({success:true,message:'邮箱修改成功',data:{name:user.name,avatar: user.avatar,email: user.email}});
+            response.json({
+                success: true,
+                message: '邮箱修改成功',
+                data: {name: user.name, avatar: user.avatar, email: user.email}
+            });
         }
-    }catch(error:any){
-        response.json({success:false,message:error.message})
+    } catch (error: any) {
+        response.json({success: false, message: error.message});
     }
-}
+};
 //Admin Login
 const adminLogin: controllerAction = async (request, response) => {
     try {
@@ -170,4 +182,13 @@ const adminLogin: controllerAction = async (request, response) => {
         response.json({success: false, message: error.message});
     }
 };
-export {loginUser, registerUser, adminLogin, userUpdatePassword, userUploadAvatar, userProfile,userUpdateEmail,userUpdateName};
+export {
+    loginUser,
+    registerUser,
+    adminLogin,
+    userUpdatePassword,
+    userUploadAvatar,
+    userProfile,
+    userUpdateEmail,
+    userUpdateName
+};

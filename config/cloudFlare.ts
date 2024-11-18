@@ -34,7 +34,7 @@ async function uploadFile(buffer: Buffer, fileName: string) {
         const ContentType = fetContentType(fileName);
         const params = {
             Bucket: process.env.CF_R2_BUCKET,
-            Key: fileName,
+            Key: 'shopProductImg/' + fileName,
             Body: buffer,
             ContentType
         };
@@ -42,9 +42,9 @@ async function uploadFile(buffer: Buffer, fileName: string) {
         if (response.$metadata.httpStatusCode !== 200) {
             console.error(response.$metadata.httpStatusCode);
         } else {
-            return `${process.env.CF_R2_RETURN_HOST}/test/${fileName}`;
+            return `${process.env.CF_R2_RETURN_HOST}/shopProductImg/${fileName}`;
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
     }
 }
