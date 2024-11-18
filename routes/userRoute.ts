@@ -5,7 +5,9 @@ import {
     adminLogin,
     userUpdatePassword,
     userUploadAvatar,
-    userProfile
+    userProfile,
+    userUpdateName,
+    userUpdateEmail
 } from '../controllers/userController';
 import userAuth from '../middleware/auth';
 import upload from '../middleware/multer';
@@ -17,4 +19,6 @@ userRouter.post('/admin', adminLogin);
 userRouter.get('/info', userAuth, userProfile);
 userRouter.post('/updatePassword', userAuth, userUpdatePassword);
 userRouter.post('/uploadAvatar', upload.single('avatar'), userAuth, userUploadAvatar);
+userRouter.post('/updateName',userAuth,userUpdateName)
+userRouter.post('./updateEmail',userAuth,userUpdateEmail)
 export default userRouter;
