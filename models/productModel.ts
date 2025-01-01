@@ -21,5 +21,5 @@ const productSchema = new mongoose.Schema<IProduct>({
     date: {type: Number, required: true},
     bestseller: {type: Boolean}
 });
-const Product = mongoose.model<IProduct>('Product', productSchema);
+const Product = mongoose.models.Product || mongoose.model<IProduct>('Product', productSchema);
 export default Product;

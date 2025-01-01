@@ -29,5 +29,5 @@ const orderSchema = new mongoose.Schema<IOrder>({
     payment: {type: Boolean, required: true, default: false},
     date: {type: Number, required: true}
 });
-const Order = mongoose.model<IOrder>('order', orderSchema);
+const Order = mongoose.models.Order || mongoose.model<IOrder>('order', orderSchema);
 export default Order;

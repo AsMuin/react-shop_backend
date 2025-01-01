@@ -19,9 +19,9 @@ const userSchema = new mongoose.Schema<IUser>(
         email: {type: String, required: true, unique: true},
         avatar: {type: String, default: undefined},
         password: {type: String, required: true},
-        cartData: {type: {String:Number}, default: {}}
+        cartData: {type: {String: Number}, default: {}}
     },
     {minimize: false}
 );
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 export default User;
